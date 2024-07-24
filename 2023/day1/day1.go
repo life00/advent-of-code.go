@@ -8,12 +8,29 @@ import (
 	"strings"
 )
 
+func replaceNumbers(rawInput *[]byte) {
+	// define strings and ints
+	strings := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
+	ints := [9]string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	// temporarily save it as other variable
+	input := string(*rawInput)
+	// loop through arrays
+	for i := 0; i < 9; i++ {
+		// replace strings[i] with ints[i]
+		reg := regexp.MustCompile(strings[i])
+		input = reg.ReplaceAllString(input, ints[i])
+	}
+	// assign it back
+	*rawInput = []byte(input)
+}
+
 func main() {
 	// read the input
-	rawInput, err := os.ReadFile("../input.txt")
+	rawInput, err := os.ReadFile("./input.txt")
 	if err != nil {
 		fmt.Println(err)
 	}
+	replaceNumbers(&rawInput)
 	// split it into an array based on newline character
 	arrInput := strings.Split(string(rawInput), "\n")
 	// remove the last faulty element in the array
