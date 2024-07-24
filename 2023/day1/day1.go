@@ -8,46 +8,35 @@ import (
 	"strings"
 )
 
-func replaceNumbers(rawInput *[]byte) {
+// function that fixes word numbers that overlap e.g. (tw(o)ne)
+func fixInput(rawInput *[]byte) {
 	// temporarily save it as other variable
 	input := string(*rawInput)
+	// all broken word number combinations
+	brokenStrings := [8]string{"oneight", "twone", "threeight", "fiveight", "sevenine", "eightwo", "eighthree", "nineight"}
+	strings := [8]string{"oneeight", "twoone", "threeeight", "fiveeight", "sevennine", "eighttwo", "eightthree", "nineeight"}
+	// loop through arrays
+	for i := 0; i < 8; i++ {
+		// replace strings[i] with ints[i]
+		reg := regexp.MustCompile(brokenStrings[i])
+		input = reg.ReplaceAllString(input, strings[i])
+	}
+	// assign it back
+	*rawInput = []byte(input)
+}
+
+// function that replaces proper word numbers with numbers
+func replaceNumbers(rawInput *[]byte) {
 	// define strings and ints
 	strings := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 	ints := [9]string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	// regex condition for loop
-	regLoop, err := regexp.Compile("one|two|three|four|five|six|seven|eight|nine")
-	if err != nil {
-		fmt.Println(err)
-	}
-	for {
-		// check for matches in input
-		if match := regLoop.FindString(input); match != "" {
-			// number that was matched
-			var num string
-			// identify the number that was matched
-			for i, v := range strings {
-				if v == match {
-					num = ints[i]
-				}
-			}
-			// replacing the match
-			regReplace, err := regexp.Compile(match)
-			if err != nil {
-				fmt.Println(err)
-			}
-			// the following code replaces only the first match and saves as input variable
-			flag := false
-			input = regReplace.ReplaceAllStringFunc(input, func(s string) string {
-				if flag {
-					return s
-				}
-				flag = true
-				return regReplace.ReplaceAllString(s, num)
-			})
-		} else {
-			// when there is no more matches to substitute
-			break
-		}
+	// temporarily save it as other variable
+	input := string(*rawInput)
+	// loop through arrays
+	for i := 0; i < 9; i++ {
+		// replace strings[i] with ints[i]
+		reg := regexp.MustCompile(strings[i])
+		input = reg.ReplaceAllString(input, ints[i])
 	}
 	// assign it back
 	*rawInput = []byte(input)
@@ -59,6 +48,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	fixInput(&rawInput)
 	replaceNumbers(&rawInput)
 	// split it into an array based on newline character
 	arrInput := strings.Split(string(rawInput), "\n")
