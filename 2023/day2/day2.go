@@ -14,23 +14,25 @@ const (
 )
 
 // checks if game is possible
-// returns game ID if possible, or 0 if not
-func checkGame(game string) int {
+// returns game ID and true if possible, or 0 and false if not
+// second value is for counting how many games it was possible in total
+func checkGame(game string) (int, bool) {
 	// get the game ID
 	id := getGameID(game)
-	fmt.Printf("Checking game %d...\n", id)
 	// get the array of rounds
 	rounds := getRounds(game)
 	// loop through each round
 	for _, r := range rounds {
-		// check if its possible
-		if checkRound(r) {
-			// return ID if possible
-			return id
+		// check if its not possible
+		if !checkRound(r) {
+			fmt.Printf("Game %d is not possible.\n", id)
+			// return 0 if not possible
+			return 0, false
 		}
 	}
-	// return 0 if not possible
-	return 0
+	fmt.Printf("Game %d is possible.\n", id)
+	// return ID if possible
+	return id, true
 }
 
 // gets the game ID
@@ -55,24 +57,50 @@ func getRounds(game string) []string {
 }
 
 // check if the round is possible
+// true: possible
+// false: not possible
 func checkRound(round string) bool {
+	// separate the round into individual cube values
 	cubes := strings.Split(round, ", ")
+	// get cube map
 	cubeMap := getMap(cubes)
-	fmt.Println(cubeMap)
-	// ...
-	return false
+	// loop through the cubeMap
+	for c, n := range cubeMap {
+		// check if the number of cubes is not above the limit
+		// if its above the limit return false
+		// otherwise true
+		switch c {
+		case "red":
+			if n > maxRed {
+				return false
+			}
+		case "green":
+			if n > maxGreen {
+				return false
+			}
+		case "blue":
+			if n > maxBlue {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 // gets the individual values in the round
-func getMap(cubes []string) (cubeMap map[string]string) {
+func getMap(cubes []string) (cubeMap map[string]int) {
 	// initialize the map (set to nothing)
-	cubeMap = map[string]string{}
+	cubeMap = map[string]int{}
 	// loop through cubes
 	for _, c := range cubes {
 		// split the cube value into number and color
 		number, color, _ := strings.Cut(c, " ")
 		// assign to the map
-		cubeMap[color] = number
+		var err error
+		cubeMap[color], err = strconv.Atoi(number)
+		if err != nil {
+			fmt.Println(err)
+		}
 	}
 	return cubeMap
 }
@@ -92,16 +120,31 @@ func main() {
 		games = games[:len(games)-1]
 	}
 
-	// variable to sum all possible games
-	var sum int
+	// variable to sum all possible games IDs
+	var idSum int
+	// array of games that are possible
+	var possibleGames []bool
 
 	// loop through all the games
 	for _, v := range games {
-		// add the game ID
-		// if the game is impossible it will return 0
-		sum += checkGame(v)
+		// if the game is impossible it will return 0, 0
+		// otherwise it will return id and 1
+		id, possible := checkGame(v)
+		// summing IDs
+		idSum = idSum + id
+		// appending the status
+		possibleGames = append(possibleGames, possible)
 	}
 
-	// print the result
-	fmt.Printf("Sum of all possible game IDs: %d\n", sum)
+	// number of possible games
+	var possible int
+
+	// calculating number of possible games
+	for _, p := range possibleGames {
+		if p {
+			possible += 1
+		}
+	}
+	fmt.Printf("%d / %d games were possible.\n", possible, len(games))
+	fmt.Printf("Sum of all possible game IDs: %d\n", idSum)
 }
