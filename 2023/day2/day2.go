@@ -3,36 +3,36 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
 	"strconv"
 	"strings"
 )
 
-const (
-	maxRed   = 12
-	maxGreen = 13
-	maxBlue  = 14
-)
-
-// checks if game is possible
-// returns game ID and true if possible, or 0 and false if not
-// second value is for counting how many games it was possible in total
-func checkGame(game string) (int, bool) {
+// gets the power of a set of cubes in the game
+// it is the product of maximum red, green and blue cube values
+func getPower(game string) (power int) {
 	// get the game ID
 	id := getGameID(game)
 	// get the array of rounds
 	rounds := getRounds(game)
+	// declare arrays of colors
+	var reds, blues, greens []int
 	// loop through each round
-	for _, r := range rounds {
-		// check if its not possible
-		if !checkRound(r) {
-			fmt.Printf("Game %d is not possible.\n", id)
-			// return 0 if not possible
-			return 0, false
-		}
+	for _, round := range rounds {
+		// get the colors and append them
+		r, g, b := getColors(round)
+		reds = append(reds, r)
+		blues = append(blues, b)
+		greens = append(greens, g)
 	}
-	fmt.Printf("Game %d is possible.\n", id)
-	// return ID if possible
-	return id, true
+	// find maximum values for each of the colors
+	maxRed := slices.Max(reds)
+	maxBlue := slices.Max(blues)
+	maxGreen := slices.Max(greens)
+	// calculating power
+	power = maxRed * maxBlue * maxGreen
+	fmt.Printf("Power for %d game is: %d\n", id, power)
+	return power
 }
 
 // gets the game ID
@@ -56,41 +56,27 @@ func getRounds(game string) []string {
 	return strings.Split(game, "; ")
 }
 
-// check if the round is possible
-// true: possible
-// false: not possible
-func checkRound(round string) bool {
+// gets the color values of the round
+func getColors(round string) (int, int, int) {
 	// separate the round into individual cube values
 	cubes := strings.Split(round, ", ")
 	// get cube map
 	cubeMap := getMap(cubes)
-	// loop through the cubeMap
-	for c, n := range cubeMap {
-		// check if the number of cubes is not above the limit
-		// if its above the limit return false
-		// otherwise true
-		switch c {
-		case "red":
-			if n > maxRed {
-				return false
-			}
-		case "green":
-			if n > maxGreen {
-				return false
-			}
-		case "blue":
-			if n > maxBlue {
-				return false
-			}
-		}
-	}
-	return true
+	// return the red, green and blue values
+	return cubeMap["red"], cubeMap["green"], cubeMap["blue"]
 }
 
 // gets the individual values in the round
 func getMap(cubes []string) (cubeMap map[string]int) {
-	// initialize the map (set to nothing)
-	cubeMap = map[string]int{}
+	// initialize the map
+	// HACK: it is all set to 1 by default to prevent situations when
+	// uninitialized map is returned with value 0 which would break
+	// the power calculation. 1 is a neutral value in power calculation.
+	cubeMap = map[string]int{
+		"red":   1,
+		"green": 1,
+		"blue":  1,
+	}
 	// loop through cubes
 	for _, c := range cubes {
 		// split the cube value into number and color
@@ -106,8 +92,6 @@ func getMap(cubes []string) (cubeMap map[string]int) {
 }
 
 func main() {
-	// print out the maximum values
-	fmt.Printf("Maximum number of cubes for the games: %d red, %d green, and %d blue.\n", maxRed, maxGreen, maxBlue)
 	// read the input file
 	bytes, err := os.ReadFile("./input.txt")
 	if err != nil {
@@ -120,31 +104,14 @@ func main() {
 		games = games[:len(games)-1]
 	}
 
-	// variable to sum all possible games IDs
-	var idSum int
-	// array of games that are possible
-	var possibleGames []bool
+	// variable to sum all powers of max cube numbers
+	var powerSum int
 
 	// loop through all the games
-	for _, v := range games {
+	for _, g := range games {
 		// if the game is impossible it will return 0, 0
 		// otherwise it will return id and 1
-		id, possible := checkGame(v)
-		// summing IDs
-		idSum = idSum + id
-		// appending the status
-		possibleGames = append(possibleGames, possible)
+		powerSum += getPower(g)
 	}
-
-	// number of possible games
-	var possible int
-
-	// calculating number of possible games
-	for _, p := range possibleGames {
-		if p {
-			possible += 1
-		}
-	}
-	fmt.Printf("%d / %d games were possible.\n", possible, len(games))
-	fmt.Printf("Sum of all possible game IDs: %d\n", idSum)
+	fmt.Printf("The sum of all powers is: %d\n", powerSum)
 }
