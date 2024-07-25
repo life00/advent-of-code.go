@@ -16,9 +16,20 @@ const (
 // checks if game is possible
 // returns game ID if possible, or 0 if not
 func checkGame(game string) int {
+	// get the game ID
 	id := getGameID(game)
 	fmt.Printf("Checking game %d...\n", id)
-	// ...
+	// get the array of rounds
+	rounds := getRounds(game)
+	// loop through each round
+	for _, r := range rounds {
+		// check if its possible
+		if checkRound(r) {
+			// return ID if possible
+			return id
+		}
+	}
+	// return 0 if not possible
 	return 0
 }
 
@@ -33,6 +44,37 @@ func getGameID(game string) (id int) {
 		fmt.Println(err)
 	}
 	return id
+}
+
+// gets separate rounds in the game
+func getRounds(game string) []string {
+	// remove Game ID part
+	_, game, _ = strings.Cut(game, ": ")
+	// create an array based on ; character
+	return strings.Split(game, "; ")
+}
+
+// check if the round is possible
+func checkRound(round string) bool {
+	cubes := strings.Split(round, ", ")
+	cubeMap := getMap(cubes)
+	fmt.Println(cubeMap)
+	// ...
+	return false
+}
+
+// gets the individual values in the round
+func getMap(cubes []string) (cubeMap map[string]string) {
+	// initialize the map (set to nothing)
+	cubeMap = map[string]string{}
+	// loop through cubes
+	for _, c := range cubes {
+		// split the cube value into number and color
+		number, color, _ := strings.Cut(c, " ")
+		// assign to the map
+		cubeMap[color] = number
+	}
+	return cubeMap
 }
 
 func main() {
