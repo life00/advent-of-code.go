@@ -30,7 +30,7 @@ In the above example it would be 29, 48, 33 which equals to 110.
 
 ## Part 2
 
-### Description
+### Summary
 
 The input also has digits written as words. It can be: one, two, three, four, five, six, seven, eight, and nine. It is necessary to account for them too.
 
