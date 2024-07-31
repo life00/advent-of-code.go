@@ -41,3 +41,7 @@ Also notice that the following string: `jofrkjneightwolrk3k` has both `eight` an
 - firstly fix overlapping word numbers like (tw(o)ne) by just replacing them with twoone, to prevent further issues
 - use initial raw data and replace words to numbers with RegEx in a for loop
 - use the rest of the code as it was before
+
+## Error handling
+
+The program can parse absolutely anything. It will try to find numbers on the line and do the regular operations with them. If there are no numbers on the line it will set this line to zero. I have tested this by running the program on an image as input file.
