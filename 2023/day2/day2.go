@@ -94,12 +94,21 @@ func getMap(colors []string) (colorMap map[string]int) {
 
 // calculates the power of max color values
 func getPower(maxColorMap map[string]int) int {
+	// if all values are 0 which may happen if parsing failed
+	// then return 0. This is necessary because of the logic after that
+	if maxColorMap["red"] == 0 && maxColorMap["green"] == 0 && maxColorMap["blue"] == 0 {
+		return 0
+	}
 	// a value of colors may be zero if there was no cubes of that color at all
 	// to prevent power becoming zero, replace those colors that have 0 with 1
-	for color, value := range maxColorMap {
-		if value == 0 {
-			maxColorMap[color] = 1
-		}
+	if maxColorMap["red"] == 0 {
+		maxColorMap["red"] = 1
+	}
+	if maxColorMap["green"] == 0 {
+		maxColorMap["green"] = 1
+	}
+	if maxColorMap["blue"] == 0 {
+		maxColorMap["blue"] = 1
 	}
 	// multiply and return
 	return maxColorMap["red"] * maxColorMap["green"] * maxColorMap["blue"]
