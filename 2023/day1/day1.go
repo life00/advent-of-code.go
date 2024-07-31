@@ -9,10 +9,8 @@ import (
 )
 
 // function that fixes word numbers that overlap e.g. (tw(o)ne)
-func fixInput(rawInput *[]byte) {
+func fixInput(input string) string {
 	fmt.Printf("Fixing broken word numbers...\n")
-	// temporarily save it as other variable
-	input := string(*rawInput)
 	// all broken word number combinations
 	brokenStrings := [8]string{"oneight", "twone", "threeight", "fiveight", "sevenine", "eightwo", "eighthree", "nineight"}
 	strings := [8]string{"oneeight", "twoone", "threeeight", "fiveeight", "sevennine", "eighttwo", "eightthree", "nineeight"}
@@ -24,18 +22,16 @@ func fixInput(rawInput *[]byte) {
 		input = reg.ReplaceAllString(input, strings[i])
 	}
 	fmt.Printf("Done!\n")
-	// assign it back
-	*rawInput = []byte(input)
+	// return the result
+	return input
 }
 
 // function that replaces proper word numbers with numbers
-func replaceNumbers(rawInput *[]byte) {
+func replaceNumbers(input string) string {
 	fmt.Printf("Replacing word numbers with numbers...\n")
 	// define strings and ints
 	strings := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
 	ints := [9]string{"1", "2", "3", "4", "5", "6", "7", "8", "9"}
-	// temporarily save it as other variable
-	input := string(*rawInput)
 	// loop through arrays
 	for i := 0; i < 9; i++ {
 		fmt.Printf("%s --> %s\n", strings[i], ints[i])
@@ -44,15 +40,15 @@ func replaceNumbers(rawInput *[]byte) {
 		input = reg.ReplaceAllString(input, ints[i])
 	}
 	fmt.Printf("Done!\n")
-	// assign it back
-	*rawInput = []byte(input)
+	// return the result
+	return input
 }
 
 // extracts the numbers to an array
-func getNumbers(rawInput *[]byte) (numbers []int) {
+func getNumbers(input string) (numbers []int) {
 	fmt.Printf("Getting numbers from the data...\n")
 	// split it into an array based on newline character
-	arrInput := strings.Split(string(*rawInput), "\n")
+	arrInput := strings.Split(input, "\n")
 	// remove the last faulty element in the array
 	if len(arrInput) > 0 {
 		arrInput = arrInput[:len(arrInput)-1]
@@ -88,9 +84,9 @@ func getNumbers(rawInput *[]byte) (numbers []int) {
 }
 
 // sums all the numbers in the array
-func sumNumbers(numbers *[]int) (result int) {
+func sumNumbers(numbers []int) (result int) {
 	fmt.Printf("Summing the array...\n%d\n", numbers)
-	for _, d := range *numbers {
+	for _, d := range numbers {
 		result += d
 	}
 	fmt.Printf("Done!\n")
@@ -105,10 +101,15 @@ func main() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fixInput(&rawInput)
-	replaceNumbers(&rawInput)
-	numbers := getNumbers(&rawInput)
-	result := sumNumbers(&numbers)
+	// convert raw input to string
+	input := string(rawInput)
+	// replace word numbers with regular numbers
+	input = fixInput(input)
+	input = replaceNumbers(input)
+	// get the array of numbers
+	numbers := getNumbers(input)
+	// calculate the result
+	result := sumNumbers(numbers)
 	// print out the result
 	fmt.Printf("Here is the result: %d\n", result)
 }
