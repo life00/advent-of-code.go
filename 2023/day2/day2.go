@@ -122,6 +122,8 @@ func isGamePossible(maxColorMap map[string]int) bool {
 }
 
 func main() {
+	// print out the maximum values
+	fmt.Printf("Maximum number of cubes for the games: %d red, %d green, and %d blue.\n", maxRed, maxGreen, maxBlue)
 	// read the input file
 	bytes, err := os.ReadFile("./input.txt")
 	if err != nil {
@@ -164,7 +166,7 @@ func main() {
 		powerSum += power
 	}
 	// printing the final results
-	fmt.Printf("%d / %d games were possible.\n", possibleSum, len(games))
+	fmt.Printf("%d / %d games are possible.\n", possibleSum, len(games))
 	fmt.Printf("Sum of all possible game ID's: %d\n", possibleIdSum)
 	fmt.Printf("Sum of all game powers is: %d\n", powerSum)
 }
