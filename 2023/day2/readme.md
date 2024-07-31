@@ -65,3 +65,15 @@ Majority of previous functionality can be reused like parsing, but I have rewrit
   - calculate the product of maximum color values
   - return the result
 - sum the results of powers from all the games
+
+## Refactor
+
+In order to make both parts work I have refactored the code to do the following:
+
+- read the input
+- split the input into individual gamest (and loop through everything afterwards)
+- get ID for logging
+- get max cube number for each color in a game
+- check if the game is possible
+- calculate the power of the game
+- print out the results
