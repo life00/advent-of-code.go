@@ -77,3 +77,11 @@ In order to make both parts work I have refactored the code to do the following:
 - check if the game is possible
 - calculate the power of the game
 - print out the results
+
+## Error handling
+
+To not complicate things I did not attempt to create logic or regex that would automatically check if a string is valid or not. Instead I let `strconv.Atoi` fail on parsing, print the error, and continue. I believe that returning the error up the functions to stop the process is also unnecessary.
+
+This approach does not change anything really because if it fails, the maximum values for the game would still all be 0. Thus it will not impact the end calculation at all. I have tested this by running it on an image. It may impact the result only if some part of the game string was successfully parsed, but this is an expected behavior.
+
+The user is informed about the problem in the logs. I believe that making a fatal error here because of failed parsing is unnecessary.
