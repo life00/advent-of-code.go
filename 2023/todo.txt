@@ -1,2 +1,1 @@
-- add error handling (most notably for input data)
 - add simple unit tests
