@@ -68,15 +68,20 @@ func getNumbers(rawInput *[]byte) (numbers []int) {
 		// remove all non digit characters
 		s = reg.ReplaceAllString(s, "")
 		// get the first and last character of a string
-		s = string(s[0]) + string(s[len(s)-1])
-		// convert string to integer
-		d, err := strconv.Atoi(s)
-		if err != nil {
-			fmt.Println(err)
+		if s != "" {
+			s = string(s[0]) + string(s[len(s)-1])
+			// convert string to integer
+			d, err := strconv.Atoi(s)
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Printf("%d\n", d)
+			// append the digit to an array
+			numbers = append(numbers, d)
+		} else {
+			// return something if there is no digits
+			fmt.Printf("*empty*\n")
 		}
-		fmt.Printf("%d\n", d)
-		// append the digit to an array
-		numbers = append(numbers, d)
 	}
 	fmt.Printf("Done!\n")
 	return numbers
@@ -94,6 +99,8 @@ func sumNumbers(numbers *[]int) (result int) {
 
 func main() {
 	// read the input
+	// it actually does not matter the file is a binary
+	// the program is able to parse that too
 	rawInput, err := os.ReadFile("./input.txt")
 	if err != nil {
 		fmt.Println(err)
