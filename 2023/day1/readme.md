@@ -45,3 +45,7 @@ Also notice that the following string: `jofrkjneightwolrk3k` has both `eight` an
 ## Error handling
 
 The program can parse absolutely anything. It will try to find numbers on the line and do the regular operations with them. If there are no numbers on the line it will set this line to zero. I have tested this by running the program on an image as input file.
+
+## Testing
+
+To test the program just run `go test -v` while in this directory. I have implemented some basic tests for all functions, except main.
