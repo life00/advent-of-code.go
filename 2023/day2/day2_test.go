@@ -48,11 +48,11 @@ func TestGetMaxColor(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := GetMaxColor(test.input)
 			if len(result) != len(test.expected) {
-				t.Error()
+				t.Errorf("length of map maxColorMap did not match expected length\n")
 			}
 			for j := range result {
 				if result[j] != test.expected[j] {
-					t.Error()
+					t.Errorf("value of key %s in map maxColorMap did not match expected value\n", j)
 				}
 			}
 		})
@@ -86,7 +86,7 @@ func TestGetGameId(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := GetGameId(test.input)
 			if result != test.expected {
-				t.Error()
+				t.Errorf("value of integer id did not match expected value\n")
 			}
 		})
 	}
@@ -119,11 +119,11 @@ func TestGetRounds(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := GetRounds(test.input)
 			if len(result) != len(test.expected) {
-				t.Error()
+				t.Errorf("length of array rounds did not match expected length\n")
 			}
 			for i := range result {
 				if result[i] != test.expected[i] {
-					t.Error()
+					t.Errorf("value of index %d in array rounds did not match expected value\n", i)
 				}
 			}
 		})
@@ -157,11 +157,11 @@ func TestGetColors(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := GetColors(test.input)
 			if len(result) != len(test.expected) {
-				t.Error()
+				t.Errorf("length of map colorMap did not match expected length\n")
 			}
 			for i := range result {
 				if result[i] != test.expected[i] {
-					t.Error()
+					t.Errorf("value of key %s in map colorMap did not match expected value\n", i)
 				}
 			}
 		})
@@ -195,7 +195,7 @@ func TestGetPower(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := GetPower(test.input)
 			if result != test.expected {
-				t.Error()
+				t.Errorf("value of integer power did not match expected value\n")
 			}
 		})
 	}
@@ -228,7 +228,7 @@ func TestIsGamePossible(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			result := IsGamePossible(test.input)
 			if result != test.expected {
-				t.Error()
+				t.Errorf("value of bool possible did not match expected value\n")
 			}
 		})
 	}
