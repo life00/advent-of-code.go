@@ -5,6 +5,8 @@ import (
 	"testing"
 )
 
+// unit tests
+
 func TestGetMaxColor(t *testing.T) {
 	tests := []struct {
 		expected map[string]int
@@ -231,5 +233,49 @@ func TestIsGamePossible(t *testing.T) {
 				t.Errorf("value of bool possible did not match expected value\n")
 			}
 		})
+	}
+}
+
+// benchmarks
+
+func BenchmarkGetMaxColor(b *testing.B) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	for i := 0; i < b.N; i++ {
+		GetMaxColor(input)
+	}
+}
+
+func BenchmarkGetGameId(b *testing.B) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	for i := 0; i < b.N; i++ {
+		GetGameId(input)
+	}
+}
+
+func BenchmarkGetRounds(b *testing.B) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	for i := 0; i < b.N; i++ {
+		GetRounds(input)
+	}
+}
+
+func BenchmarkGetColors(b *testing.B) {
+	input := "10 blue, 2 red, 7 green"
+	for i := 0; i < b.N; i++ {
+		GetColors(input)
+	}
+}
+
+func BenchmarkGetPower(b *testing.B) {
+	input := map[string]int{"red": 2, "green": 4, "blue": 3}
+	for i := 0; i < b.N; i++ {
+		GetPower(input)
+	}
+}
+
+func BenchmarkIsGamePossible(b *testing.B) {
+	input := map[string]int{"red": 2, "green": 4, "blue": 3}
+	for i := 0; i < b.N; i++ {
+		IsGamePossible(input)
 	}
 }
