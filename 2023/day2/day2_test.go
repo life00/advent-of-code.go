@@ -156,7 +156,6 @@ func TestGetColors(t *testing.T) {
 		name := fmt.Sprintf("round %d", i+1)
 		t.Run(name, func(t *testing.T) {
 			result := GetColors(test.input)
-			t.Log(result)
 			if len(result) != len(test.expected) {
 				t.Error()
 			}
@@ -228,7 +227,6 @@ func TestIsGamePossible(t *testing.T) {
 		name := fmt.Sprintf("game %d", i+1)
 		t.Run(name, func(t *testing.T) {
 			result := IsGamePossible(test.input)
-			t.Log(result)
 			if result != test.expected {
 				t.Error()
 			}
