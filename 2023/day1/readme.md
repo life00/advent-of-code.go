@@ -49,3 +49,5 @@ The program can parse absolutely anything. It will try to find numbers on the li
 ## Testing
 
 To test the program just run `go test -v` while in this directory. I have implemented some basic tests for all functions, except main.
+
+To benchmark the program run `go test -bench=.`, or if you want to benchmark a specific function `go test -bench=FixInput`.
