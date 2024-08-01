@@ -4,6 +4,8 @@ import (
 	"testing"
 )
 
+// unit tests
+
 func TestFixInput(t *testing.T) {
 	input := `WIkuseveniney2xl10tScRg1D
 zntxAo5xz
@@ -58,5 +60,45 @@ func TestSumNumbers(t *testing.T) {
 	result := SumNumbers(input)
 	if result != expected {
 		t.Errorf("value of integer result did not match expected value\n")
+	}
+}
+
+// benchmarks
+
+func BenchmarkFixInput(b *testing.B) {
+	input := `WIkuseveniney2xl10tScRg1D
+zntxAo5xz
+reSNZYMggZu
+qIfeOFfV26bdbtwonez`
+	for i := 0; i < b.N; i++ {
+		FixInput(input)
+	}
+}
+
+func BenchmarkReplaceNumbers(b *testing.B) {
+	input := `WIkusevenniney2xl10tScRg1D
+zntxAo5xz
+reSNZYMggZu
+qIfeOFfV26bdbtwoonez`
+	for i := 0; i < b.N; i++ {
+		ReplaceNumbers(input)
+	}
+}
+
+func BenchmarkGetNumbers(b *testing.B) {
+	input := `WIku79y2xl10tScRg1D
+zntxAo5xz
+reSNZYMggZu
+qIfeOFfV26bdb21z
+` // additional newline is necessary to account for last newline that is usually in input
+	for i := 0; i < b.N; i++ {
+		GetNumbers(input)
+	}
+}
+
+func BenchmarkSumNumbers(b *testing.B) {
+	input := []int{71, 55, 21}
+	for i := 0; i < b.N; i++ {
+		SumNumbers(input)
 	}
 }
