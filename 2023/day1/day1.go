@@ -9,7 +9,7 @@ import (
 )
 
 // function that fixes word numbers that overlap e.g. (tw(o)ne)
-func fixInput(input string) string {
+func FixInput(input string) string {
 	fmt.Printf("Fixing broken word numbers...\n")
 	// all broken word number combinations
 	brokenStrings := [8]string{"oneight", "twone", "threeight", "fiveight", "sevenine", "eightwo", "eighthree", "nineight"}
@@ -27,7 +27,7 @@ func fixInput(input string) string {
 }
 
 // function that replaces proper word numbers with numbers
-func replaceNumbers(input string) string {
+func ReplaceNumbers(input string) string {
 	fmt.Printf("Replacing word numbers with numbers...\n")
 	// define strings and ints
 	strings := [9]string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
@@ -45,7 +45,7 @@ func replaceNumbers(input string) string {
 }
 
 // extracts the numbers to an array
-func getNumbers(input string) (numbers []int) {
+func GetNumbers(input string) (numbers []int) {
 	fmt.Printf("Getting numbers from the data...\n")
 	// split it into an array based on newline character
 	arrInput := strings.Split(input, "\n")
@@ -84,7 +84,7 @@ func getNumbers(input string) (numbers []int) {
 }
 
 // sums all the numbers in the array
-func sumNumbers(numbers []int) (result int) {
+func SumNumbers(numbers []int) (result int) {
 	fmt.Printf("Summing the array...\n%d\n", numbers)
 	for _, d := range numbers {
 		result += d
@@ -104,12 +104,12 @@ func main() {
 	// convert raw input to string
 	input := string(rawInput)
 	// replace word numbers with regular numbers
-	input = fixInput(input)
-	input = replaceNumbers(input)
+	input = FixInput(input)
+	input = ReplaceNumbers(input)
 	// get the array of numbers
-	numbers := getNumbers(input)
+	numbers := GetNumbers(input)
 	// calculate the result
-	result := sumNumbers(numbers)
+	result := SumNumbers(numbers)
 	// print out the result
 	fmt.Printf("Here is the result: %d\n", result)
 }
