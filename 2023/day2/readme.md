@@ -85,3 +85,7 @@ To not complicate things I did not attempt to create logic or regex that would a
 This approach does not change anything really because if it fails, the maximum values for the game would still all be 0. Thus it will not impact the end calculation at all. I have tested this by running the program on an image as input file. It may impact the result only if some part of the game string was successfully parsed, but this is an expected behavior.
 
 The user is informed about the problem in the logs. I believe that making a fatal error here because of failed parsing is unnecessary.
+
+## Testing
+
+To test the program just run `go test -v` while in this directory. I have implemented the most essential tests for all functions except for main. Please ignore `strconv.Atoi` error messages, those are a part of testing of error handling.
