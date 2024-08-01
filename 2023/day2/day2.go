@@ -10,24 +10,24 @@ import (
 
 // maximum limits for number of cubes
 const (
-	maxRed   = 12
-	maxGreen = 13
-	maxBlue  = 14
+	MaxRed   = 12
+	MaxGreen = 13
+	MaxBlue  = 14
 )
 
 // gets the maximum values of colors in the game
-func getMaxColor(game string) (maxColorMap map[string]int) {
+func GetMaxColor(game string) (maxColorMap map[string]int) {
 	// get the array of rounds
-	rounds := getRounds(game)
+	rounds := GetRounds(game)
 	// declare arrays of colors
 	var reds, blues, greens []int
 	// loop through each round
 	for _, round := range rounds {
 		// get the colors and append them
-		r, g, b := getColors(round)
-		reds = append(reds, r)
-		blues = append(blues, b)
-		greens = append(greens, g)
+		colorMap := GetColors(round)
+		reds = append(reds, colorMap["red"])
+		blues = append(blues, colorMap["blue"])
+		greens = append(greens, colorMap["green"])
 	}
 	maxColorMap = map[string]int{}
 	// get maximum color values
@@ -39,7 +39,7 @@ func getMaxColor(game string) (maxColorMap map[string]int) {
 }
 
 // gets the game ID
-func getGameID(game string) (id int) {
+func GetGameId(game string) (id int) {
 	// remove the prefix and suffix of the game data
 	game, _ = strings.CutPrefix(game, "Game ")
 	game, _, _ = strings.Cut(game, ":")
@@ -52,7 +52,7 @@ func getGameID(game string) (id int) {
 }
 
 // gets separate rounds in the game
-func getRounds(game string) []string {
+func GetRounds(game string) []string {
 	// remove Game ID part
 	_, game, _ = strings.Cut(game, ": ")
 	// create an array based on ; character
@@ -60,17 +60,9 @@ func getRounds(game string) []string {
 }
 
 // gets the color values of the round
-func getColors(round string) (int, int, int) {
+func GetColors(round string) (colorMap map[string]int) {
 	// separate the round into individual color values
 	colors := strings.Split(round, ", ")
-	// get color map
-	colorMap := getMap(colors)
-	// return the red, green and blue values
-	return colorMap["red"], colorMap["green"], colorMap["blue"]
-}
-
-// gets the individual values in the round
-func getMap(colors []string) (colorMap map[string]int) {
 	// initialize the map
 	// have them initialized as zero by default
 	colorMap = map[string]int{
@@ -93,7 +85,7 @@ func getMap(colors []string) (colorMap map[string]int) {
 }
 
 // calculates the power of max color values
-func getPower(maxColorMap map[string]int) int {
+func GetPower(maxColorMap map[string]int) int {
 	// if all values are 0 which may happen if parsing failed
 	// then return 0. This is necessary because of the logic after that
 	if maxColorMap["red"] == 0 && maxColorMap["green"] == 0 && maxColorMap["blue"] == 0 {
@@ -114,17 +106,17 @@ func getPower(maxColorMap map[string]int) int {
 	return maxColorMap["red"] * maxColorMap["green"] * maxColorMap["blue"]
 }
 
-func isGamePossible(maxColorMap map[string]int) bool {
+func IsGamePossible(maxColorMap map[string]int) bool {
 	// check if the number of cubes of each color is not above the limit
 	// if its above the limit return false
 	// otherwise true
-	if maxColorMap["red"] > maxRed {
+	if maxColorMap["red"] > MaxRed {
 		return false
 	}
-	if maxColorMap["green"] > maxGreen {
+	if maxColorMap["green"] > MaxGreen {
 		return false
 	}
-	if maxColorMap["blue"] > maxBlue {
+	if maxColorMap["blue"] > MaxBlue {
 		return false
 	}
 	return true
@@ -132,7 +124,7 @@ func isGamePossible(maxColorMap map[string]int) bool {
 
 func main() {
 	// print out the maximum values
-	fmt.Printf("Maximum number of cubes for the games: %d red, %d green, and %d blue.\n", maxRed, maxGreen, maxBlue)
+	fmt.Printf("Maximum number of cubes for the games: %d red, %d green, and %d blue.\n", MaxRed, MaxGreen, MaxBlue)
 	// read the input file
 	bytes, err := os.ReadFile("./input.txt")
 	if err != nil {
@@ -155,13 +147,13 @@ func main() {
 	// loop through all the games
 	for _, g := range games {
 		// get the game ID for logging
-		id := getGameID(g)
+		id := GetGameId(g)
 		fmt.Printf("Working on game %d...\n", id)
 		// get the map of max color values in the game
-		maxColorMap := getMaxColor(g)
+		maxColorMap := GetMaxColor(g)
 		fmt.Printf("Maximum colors for game %d are: %d red, %d green, and %d blue\n", id, maxColorMap["red"], maxColorMap["green"], maxColorMap["blue"])
 		// check if game is possible
-		if isGamePossible(maxColorMap) {
+		if IsGamePossible(maxColorMap) {
 			fmt.Printf("Game %d is possible\n", id)
 			// add values to the total sum
 			possibleSum += 1
@@ -170,7 +162,7 @@ func main() {
 			fmt.Printf("Game %d is not possible\n", id)
 		}
 		// get the power of the game and add it to the sum
-		power := getPower(maxColorMap)
+		power := GetPower(maxColorMap)
 		fmt.Printf("Power of game %d is: %d\n", id, power)
 		powerSum += power
 	}
