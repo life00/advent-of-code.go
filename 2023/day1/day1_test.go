@@ -15,7 +15,7 @@ reSNZYMggZu
 qIfeOFfV26bdbtwoonez`
 	result := FixInput(input)
 	if result != expected {
-		t.Error()
+		t.Errorf("return value from FixInput did not match expected value\n")
 	}
 }
 
@@ -30,7 +30,7 @@ reSNZYMggZu
 qIfeOFfV26bdb21z`
 	result := ReplaceNumbers(input)
 	if result != expected {
-		t.Error()
+		t.Errorf("return value from ReplaceNumbers did not match expected value\n")
 	}
 }
 
@@ -57,6 +57,6 @@ func TestSumNumbers(t *testing.T) {
 	expected := 147
 	result := SumNumbers(input)
 	if result != expected {
-		t.Error()
+		t.Errorf("value of integer result did not match expected value\n")
 	}
 }
