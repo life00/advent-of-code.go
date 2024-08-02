@@ -91,3 +91,5 @@ The user is informed about the problem in the logs. I believe that making a fata
 To test the program just run `go test -v` while in this directory. I have implemented the most essential tests for all functions except for main. Please ignore `strconv.Atoi` error messages, those are a part of testing of error handling.
 
 To benchmark the program run `go test -bench=.`, or if you want to benchmark a specific function `go test -bench=GetMaxColor`.
+
+To run fuzz tests use `go test -v -fuzz=FunctionName -fuzztime=10s`.

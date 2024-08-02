@@ -236,6 +236,54 @@ func TestIsGamePossible(t *testing.T) {
 	}
 }
 
+// fuzz testing
+
+func FuzzGetMaxColor(f *testing.F) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	f.Add(input)
+	f.Fuzz(func(t *testing.T, input string) {
+		GetMaxColor(input)
+	})
+}
+
+func FuzzGetGameId(f *testing.F) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	f.Add(input)
+	f.Fuzz(func(t *testing.T, input string) {
+		GetGameId(input)
+	})
+}
+
+func FuzzGetRounds(f *testing.F) {
+	input := "Game 1: 4 green; 10 blue, 2 red, 7 green; 3 blue, 1 red, 0 green; 8 blue, 5 red"
+	f.Add(input)
+	f.Fuzz(func(t *testing.T, input string) {
+		GetRounds(input)
+	})
+}
+
+func FuzzGetColors(f *testing.F) {
+	input := "10 blue, 2 red, 7 green"
+	f.Add(input)
+	f.Fuzz(func(t *testing.T, input string) {
+		GetColors(input)
+	})
+}
+
+func FuzzGetPower(f *testing.F) {
+	f.Add(2, 4, 3)
+	f.Fuzz(func(t *testing.T, i1 int, i2 int, i3 int) {
+		GetPower(map[string]int{"red": i1, "green": i2, "blue": i3})
+	})
+}
+
+func FuzzIsGamePossible(f *testing.F) {
+	f.Add(2, 4, 3)
+	f.Fuzz(func(t *testing.T, i1 int, i2 int, i3 int) {
+		IsGamePossible(map[string]int{"red": i1, "green": i2, "blue": i3})
+	})
+}
+
 // benchmarks
 
 func BenchmarkGetMaxColor(b *testing.B) {
